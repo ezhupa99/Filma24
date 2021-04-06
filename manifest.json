@@ -2,5 +2,16 @@
   "name": "Filma24",
   "description": "Ky eshte nje extention per te pare filmin direkt nga source.",
   "version": "0.1.0",
-  "manifest_version": "2"
+  "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "./background.js"
+    ]
+  },
+  "options_page": "./options.html",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "https://www.filma24.ai/*"
+  ]
 }
