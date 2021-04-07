@@ -10,8 +10,9 @@
   },
   "options_page": "./options.html",
   "permissions": [
-    "tabs",
-    "activeTab",
-    "https://www.filma24.ai/*"
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "*://www.filma24.ai/*"
   ]
 }
