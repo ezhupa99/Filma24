@@ -1,18 +1,37 @@
 {
   "name": "Filma24",
   "description": "Ky eshte nje extention per te pare filmin direkt nga source.",
-  "version": "0.1.0",
-  "manifest_version": 2,
-  "background": {
-    "scripts": [
-      "./background.js"
+  "version": "1.0",
+  "manifest_version": 3,
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
     ]
   },
-  "options_page": "./options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentScript.js"
+      ]
+    }
+  ],
   "permissions": [
-    "storage",
     "webRequest",
-    "webRequestBlocking",
-    "*://www.filma24.ai/*"
+    "*://*.google.com/*",
+    "*://*.abcd.com/*",
+    "*://*.example.com/*",
+    "http://*.xyz.com/*",
+    "*://*.headers.com/*",
+    "declarativeNetRequest"
   ]
 }
