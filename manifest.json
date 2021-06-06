@@ -3,6 +3,14 @@
   "description": "Ky eshte nje extention per te pare filmin direkt nga source.",
   "version": "1.0",
   "manifest_version": 3,
+  "action": {
+    "default_icon": {
+      "16": "images/icon16.png",
+      "24": "images/icon24.png",
+      "32": "images/icon32.png"
+    },
+    "default_title": "Ad Blocker for Filma24"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -11,7 +19,9 @@
       "js": [
         "contentScript.js"
       ],
-      "css" : ["style.css"]
+      "css": [
+        "style.css"
+      ]
     }
   ]
 }
