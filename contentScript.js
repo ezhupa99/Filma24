@@ -1,38 +1,99 @@
 "use strict";
 
-const checkForAdWord = (script) =>
-    script.src.toLowerCase().includes("ads") ||
-    script.src.toLowerCase().includes("trackad") &&
-    script.src.toLowerCase().indexOf("uploads") === -1;
+function removeAllScripts() {
+    document.querySelectorAll("script").forEach(
+        script => {
+            script.remove();
+        }
+    )
+}
 
+function removeAllIFrames() {
+    document.querySelectorAll("iframe")
+        .forEach(frame => {
+            frame.remove();
+        })
+}
+
+function replaceWholeHtmlToRemoveEvents() {
+    const html = document.querySelector("html");
+    const new_element = html.cloneNode(true);
+    html.parentNode.replaceChild(new_element, html);
+}
+
+function addLoadingScreenTillAdsAreRemoved() {
+    const wrapperDiv = document.createElement("div");
+    const body = document.querySelector("body");
+    const main = document.querySelector(".main");
+
+    main.classList.add("custom-overlay");
+
+    wrapperDiv.classList.add("spinner-wrapper")
+
+    wrapperDiv.append(prepareLoadingDiv())
+
+    body.append(wrapperDiv)
+}
+
+function removeLoading() {
+    const wrapperDiv = document.querySelector(".spinner-wrapper");
+    const main = document.querySelector(".main");
+
+    main.classList.remove("custom-overlay");
+    wrapperDiv.remove();
+}
+
+function prepareLoadingDiv() {
+    const rollerDiv = document.createElement("div");
+    rollerDiv.classList.add("lds-roller");
+    // * Populate wrapper div with simple divs to create the effect of loading
+    rollerDiv.innerHTML = `
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    `;
+
+    return rollerDiv;
+}
+
+function addBackFunctionalityToScrollToTop() {
+    const scroller = document.querySelector("#scroller");
+
+    scroller.addEventListener("click", function () {
+        window.scroll({top: 0})
+    })
+}
+
+function removeYouTubeVideoFromPlayer() {
+    document.querySelector("#vidad").remove();
+}
+
+// * Main Function
 (function () {
     if (location.host.includes("filma24")) {
-        // // * Add a new event listener on the main div and stopping the bubble
-        // document.querySelector(".main")
-        //     .addEventListener("click", (e) => {
-        //         e.stopPropagation();
-        //         console.log(`test`);
-        //     });
-        //
-        // // * Remove all IFrames
-        // document.querySelectorAll("iframe")
-        //     .forEach(frame => {
-        //         frame.remove();
-        //     })
-        //
-        // // * Remove all scripts that contains ads on their src
-        //
-        // document.querySelectorAll("script").forEach(
-        //     script => {
-        //         // if (checkForAdWord(script)) {
-        //         //     script.remove();
-        //         // }
-        //         script.remove();
-        //     }
-        // )
+        removeAllIFrames();
 
-        const body = document.querySelector("body");
-        const new_element = body.cloneNode(true);
-        body.parentNode.replaceChild(new_element, body);
+        addLoadingScreenTillAdsAreRemoved();
+
+        onClearance();
     }
 })()
+
+function onClearance() {
+    document.addEventListener('readystatechange', () => {
+        if (document.readyState === "complete") {
+            removeAllScripts();
+            replaceWholeHtmlToRemoveEvents();
+            removeLoading();
+            addBackFunctionalityToScrollToTop();
+        }
+    })
+}
+
+
+
