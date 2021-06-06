@@ -1,6 +1,6 @@
 {
   "name": "Filma24",
-  "description": "Ky eshte nje extention per te pare filmin direkt nga source.",
+  "description": "No more disturbing ads while watching your favorite movie",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
@@ -23,5 +23,8 @@
         "style.css"
       ]
     }
+  ],
+  "host_permissions": [
+    "https://www.filma24.ai/"
   ]
 }
