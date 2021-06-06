@@ -73,20 +73,12 @@ function removeYouTubeVideoFromPlayer() {
     document.querySelector("#vidad").remove();
 }
 
-function getAllRedirectsFromHeader() {
-    const header = document.querySelector('.head-menu');
-    const links = header.querySelectorAll('a');
-    return Array.from(links)
-        .filter(
-            el =>
-                !(
-                    el.href.includes('bit.ly') ||
-                    el.href.includes('javascript') ||
-                    el.href.length === 23
-                )
-        ).map(el => {
-            return el.href;
-        })
+function closeNotification() {
+    const btn = document.querySelector(".mbyllnjoftim");
+
+    if (btn) {
+        btn.click();
+    }
 }
 
 function onClearance() {
@@ -97,12 +89,7 @@ function onClearance() {
             removeLoading();
             addBackFunctionalityToScrollToTop();
 
-            // const goodLinks = getAllRedirectsFromHeader();
-            // goodLinks.push("https://www.filma24.ai/")
-            //
-            // if (goodLinks.includes(window.location.href)) {
             removeAllAdsAppearance();
-            // }
         }
     })
 }
@@ -110,10 +97,11 @@ function onClearance() {
 function removeAllAdsAppearance() {
     removeBitLyAds();
     removeRealAds();
+    closeNotification();
 }
 
 /**
- * Remove all ads connected with bit.ly
+ * Remove all ads associated with bit.ly
  */
 function removeBitLyAds() {
     const centers = document.querySelectorAll("center");
@@ -138,14 +126,64 @@ function removeRealAds() {
     }
 }
 
+/**
+ * Return all links that we can perform basic ad removal
+ * @returns {string[]}
+ */
+function getAllRedirectsFromHeader() {
+    const header = document.querySelector('.head-menu');
+    const links = header.querySelectorAll('a');
+    return Array.from(links)
+        .filter(
+            el =>
+                !(
+                    el.href.includes('bit.ly') ||
+                    el.href.includes('javascript') ||
+                    el.href.length === 23
+                )
+        ).map(el => {
+            return el.href;
+        })
+}
+
+function removeWidgetAd() {
+    const widget = document.querySelector('.widgets');
+
+    if (widget) widget.remove();
+}
+
+/**
+ * Get the frame
+ */
+function getIframeFromMoviePlayer() {
+    const moviePlayer = document.querySelector(".movie-player");
+    const frame = moviePlayer.querySelector("iframe");
+    window.open(frame.src, "_blank").focus();
+}
+
 // * Main Function
 (function () {
     if (location.host.includes("filma24")) {
-        removeAllIFrames();
 
-        addLoadingScreenTillAdsAreRemoved();
+        const links = getAllRedirectsFromHeader();
+        links.push("https://www.filma24.ai/");
 
-        onClearance();
+        // * Check if we are on a movie page or at any other page
+        // * If true we are at any page except movie page
+        if (links.includes(window.location.href) ||
+            window.location.href.includes("page/")) {
+
+            addLoadingScreenTillAdsAreRemoved();
+
+            removeAllIFrames();
+
+            onClearance();
+        } else {
+            removeYouTubeVideoFromPlayer();
+            removeWidgetAd();
+            removeBitLyAds();
+            getIframeFromMoviePlayer();
+        }
     }
 })()
 
