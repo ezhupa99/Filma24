@@ -12,6 +12,9 @@
     },
     "default_title": "Ad Blocker for Filma24"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": [
