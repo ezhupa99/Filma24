@@ -106,3 +106,50 @@ fabric.properties
 .idea/codestream.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/webstorm
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/popup/dist
+/popup/tmp
+/popup/out-tsc
+# Only exists if Bazel was run
+/popup/bazel-out
+
+# dependencies
+/popup/node_modules
+
+# profiling files
+/popup/chrome-profiler-events*.json
+/popup/speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/popup//.sass-cache
+/popup//connect.lock
+/popup//coverage
+/popup//libpeerconnection.log
+/popup/npm-debug.log
+/popup/yarn-error.log
+/popup/testem.log
+/popup//typings
+
+# System Files
+/popup/.DS_Store
+/popup/Thumbs.db
