@@ -4,11 +4,11 @@
   "version": "1.1",
   "manifest_version": 3,
   "action": {
-    "default_popup": "popup/dist/popup.html",
+    "default_popup": "../../popup.html",
     "default_icon": {
-      "16": "images/icon16.png",
-      "24": "images/icon24.png",
-      "32": "images/icon32.png"
+      "16": "../images/icon16.png",
+      "24": "../images/icon24.png",
+      "32": "../images/icon32.png"
     },
     "default_title": "Ad Blocker for Filma24"
   },
@@ -18,13 +18,13 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "https://www.filma24.ai/"
       ],
       "js": [
         "contentScript.js"
       ],
       "css": [
-        "style.css"
+        "contentStyle.css"
       ]
     }
   ],
