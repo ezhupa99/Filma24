@@ -1,4 +1,7 @@
 <label class="toggle-control">
-    <input type="checkbox" checked="checked">
+    <input type="checkbox"
+           [checked]="active"
+           (change)="onStateChange($event)"
+    >
     <span class="control"></span>
 </label>
