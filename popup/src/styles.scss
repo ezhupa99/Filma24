@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+*, html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.custom-tooltip {
+  position: relative;
+}
+
+.custom-tooltip::after {
+  content: attr(tooltip);
+  visibility: hidden;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+
+  width: max-content;
+  transform: translateX(-50%);
+  transition: all 100ms linear;
+}
+
+.custom-tooltip:hover::after {
+  content: attr(tooltip);
+
+  visibility: visible;
+
+  color: white;
+  background-color: rgb(0 0 0 / 80%);
+
+  position: absolute;
+  top: -40px;
+  left: 50%;
+
+  width: max-content;
+  padding: 5px 10px;
+  transform: translateX(-50%);
+}
+
+/* Override bootstrap warning button on product icons */
+.btn-outline-warning.custom-tooltip:hover {
+  color: white;
+}
