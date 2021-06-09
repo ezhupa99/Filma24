@@ -1,0 +1,35 @@
+.main {
+  height: 250px;
+  width: 250px;
+
+  background-color: aqua;
+
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+  grid-template-rows: repeat(4, 25%);
+  grid-template-areas:
+  '. header header .'
+  'body body body body'
+  'body body body body'
+  '. . footer footer';
+
+  .header {
+    grid-area: header;
+  }
+
+  .options-wrapper {
+    grid-area: body;
+
+    background-color: #00ff5d;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .footer {
+    grid-area: footer;
+
+  }
+}
