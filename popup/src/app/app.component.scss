@@ -1,8 +1,6 @@
 .main {
-  height: 250px;
   width: 250px;
-
-  background-color: aqua;
+  height: 250px;
 
   display: grid;
   grid-template-columns: repeat(4, 25%);
@@ -11,25 +9,26 @@
   '. header header .'
   'body body body body'
   'body body body body'
-  '. . footer footer';
+  '. footer footer footer';
 
   .header {
     grid-area: header;
   }
 
-  .options-wrapper {
+  .body {
     grid-area: body;
+    background-color: #DEDEDF;
 
-    background-color: #00ff5d;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+    .offset-top {
+      margin-top: -9px;
+    }
   }
 
   .footer {
     grid-area: footer;
 
+    .copyright {
+      color: var(--bs-secondary);
+    }
   }
 }

@@ -17,12 +17,23 @@ export class AppComponent implements OnInit {
         });
     }
 
-    onChromeUpdateSync(state: boolean, field: string) {
+    onChromeUpdateSync(state: boolean, field: "ads" | "redirects") {
+
+        if (!(this.blockAds && this.blockRedirects)) {
+            // @ts-ignore
+            // chrome.action.setIcon()
+        }
+
+        debugger;
+
+        this[`block${this.capitalizeFirstLetter(field)}`] = state;
+
         // @ts-ignore
         chrome.storage.sync.set({
             [field]: state
         }, () => {
-            console.log("Updated " + field + " with state: " + state)
         });
     }
+
+    private capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 }
