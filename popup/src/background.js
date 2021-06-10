@@ -13,18 +13,39 @@ chrome.storage.sync.get(['ads', 'redirects'], (result) => {
     redirects = result.redirects;
 });
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
+chrome.storage.onChanged.addListener(async (changes, namespace) => {
     for (let [key, {oldValue, newValue}] of Object.entries(changes)) {
 
         if (namespace === "sync") {
             // * Set the local variables the new value
             this[key] = changes[key].newValue;
+            const tab = await getTab();
 
-            console.log(
-                `Storage key "${key}" in namespace "${namespace}" changed.`,
-                `Old value was "${oldValue}", new value is "${newValue}".`
-            );
+            // switch (key) {
+            //     case "ads":
+            //         // chrome.scripting.executeScript({
+            //         //     target: {tabId: tab.id},
+            //         //     function: removeRealAds,
+            //         // });
+            //         // chrome.scripting.executeScript({
+            //         //     target: {tabId: tab}
+            //         // })
+            //         break;
+            //
+            // }
         }
     }
 });
 
+getTab =
+    async () => {
+        const [tab] =
+            await chrome.tabs.query(
+                {
+                    active: true,
+                    currentWindow: true
+                });
+
+        console.log("Inside GetTab: ", tab)
+        return tab;
+    }
