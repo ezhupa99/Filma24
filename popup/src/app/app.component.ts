@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 
 @Component({
     selector: 'app-root',
@@ -6,25 +6,28 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ["app.component.scss"]
 })
 export class AppComponent implements OnInit {
-    blockAds = true;
-    blockRedirects = true;
+    blockAds: boolean = null;
+    blockRedirects: boolean = null;
+
+    constructor(private zone: NgZone) {
+    }
 
     ngOnInit() {
         // @ts-ignore
-        chrome.storage.sync.get(['ads', 'redirects'], (result) => {
-            this.blockAds = result.ads;
-            this.blockRedirects = result.redirects;
-        });
+        chrome.storage.sync.get(['ads', 'redirects'],
+            (result) => {
+                // * Wrap on zone since chrome API is not on AngularZONE
+                this.zone.run(() => {
+                    this.blockAds = result.ads;
+                    this.blockRedirects = result.redirects;
+                })
+            });
     }
 
     onChromeUpdateSync(state: boolean, field: "ads" | "redirects") {
-
         if (!(this.blockAds && this.blockRedirects)) {
-            // @ts-ignore
-            // chrome.action.setIcon()
+            // TODO: Disable Icon if both of options are off
         }
-
-        debugger;
 
         this[`block${this.capitalizeFirstLetter(field)}`] = state;
 
