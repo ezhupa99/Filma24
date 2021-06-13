@@ -1,5 +1,4 @@
-import {EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
-import {Component, Input, Output} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
     selector: 'app-toggle',
@@ -7,14 +6,11 @@ import {Component, Input, Output} from '@angular/core';
     styleUrls: ['./toggle.component.scss']
 })
 export class ToggleComponent {
-    @Input() active = true;
-    @Output() state = new EventEmitter<boolean>()
+    @Input() active = null;
+    @Output() state = new EventEmitter<boolean>(false);
 
     onStateChange(e: Event): void {
-        debugger;
         const el = e.target as HTMLInputElement;
-        // * Update local active property
-        this.active = el.checked;
         // * Emit new state
         this.state.emit(el.checked)
     }
