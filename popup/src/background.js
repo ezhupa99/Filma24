@@ -21,18 +21,15 @@ chrome.storage.onChanged.addListener(async (changes, namespace) => {
             this[key] = changes[key].newValue;
             const tab = await getTab();
 
-            // switch (key) {
-            //     case "ads":
-            //         // chrome.scripting.executeScript({
-            //         //     target: {tabId: tab.id},
-            //         //     function: removeRealAds,
-            //         // });
-            //         // chrome.scripting.executeScript({
-            //         //     target: {tabId: tab}
-            //         // })
-            //         break;
-            //
-            // }
+            switch (key) {
+                case "ads":
+                    chrome.scripting.executeScript({
+                        target: {tabId: tab.id},
+                        function: removeRealAds,
+                    });
+                    break;
+
+            }
         }
     }
 });
