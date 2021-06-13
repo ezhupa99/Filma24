@@ -7,6 +7,7 @@
         <div class="d-flex align-items-center">
             <span class="w-75 user-select-none">Remove Ads</span>
             <app-toggle class="w-25 offset-top"
+                        *ngIf="blockAds !== null"
                         [active]="blockAds"
                         (state)="onChromeUpdateSync($event, 'ads')">
             </app-toggle>
@@ -14,6 +15,7 @@
         <div class="d-flex align-items-center">
             <span class="w-75 user-select-none">Remove Redirects</span>
             <app-toggle class="w-25 offset-top"
+                        *ngIf="blockRedirects !== null"
                         [active]="blockRedirects"
                         (state)="onChromeUpdateSync($event, 'redirects')">
             </app-toggle>
