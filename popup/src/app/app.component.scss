@@ -4,11 +4,17 @@
 
   display: grid;
   grid-template-columns: repeat(4, 25%);
-  grid-template-rows: repeat(4, 25%);
+  grid-template-rows: repeat(10, 10%);
   grid-template-areas:
+  '. header header .'
   '. header header .'
   'body body body body'
   'body body body body'
+  'body body body body'
+  'body body body body'
+  'info info info info'
+  'info info info info'
+  'info info info info'
   '. footer footer footer';
 
   .header {
@@ -21,6 +27,14 @@
 
     .offset-top {
       margin-top: -9px;
+    }
+  }
+
+  .info {
+    grid-area: info;
+
+    span {
+      font-size: 12px;
     }
   }
 
