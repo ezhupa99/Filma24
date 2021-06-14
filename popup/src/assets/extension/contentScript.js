@@ -1,4 +1,127 @@
-"use strict";
+function getAllRedirectsFromHeader() {
+    const header = document.querySelector('.head-menu');
+    const links = header.querySelectorAll('a');
+    return Array.from(links)
+        .filter(
+            el =>
+                !(
+                    el.href.includes('bit.ly') ||
+                    el.href.includes('javascript')
+                )
+        ).map(el => {
+            return el.href;
+        })
+}
+
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+
+        addLoadingScreenTillAdsAreRemoved();
+
+        const links = getAllRedirectsFromHeader();
+
+        if (links.includes(window.location.href) ||
+            window.location.href.includes("page/")) {
+            // * Remove/Add Ads on other pages
+            request.state ?
+                this[`remove${request.field}FromOthers`]() :
+                this[`add${request.field}FromOthers`]();
+        } else {
+            request.state ?
+                this[`remove${request.field}FromPlayer`]() :
+                this[`add${request.field}FromPlayer`]();
+        }
+    }
+);
+
+function removeAdsFromOthers() {
+    // console.warn("NotImplemented@%cAdsFromOthers", "color: salmon;");
+
+    onOthersAdsClearance();
+
+    removeLoading();
+}
+
+function removeAdsFromPlayer() {
+    // console.warn("NotImplemented@%cAdsFromPlayer", "color: salmon;");
+
+    onPlayerAdsClearance();
+
+    removeLoading();
+}
+
+function addAdsFromOthers() {
+    console.warn("NotImplemented@%cAdsFromOthers", "color:lawngreen;");
+
+    // const headers = new Headers();
+    // headers.set("Content-Type", "text/html");
+    //
+    // fetch(window.location.href, {
+    //     headers
+    // })
+    //     .then(
+    //         res => {
+    //             return res.text();
+    //         }
+    //     )
+    //     .then(data => {
+    //         const html = document.querySelector("html");
+    //         html.innerHTML = data.slice(41, data.length-11);
+    //     })
+
+    removeLoading();
+}
+
+function addAdsFromPlayer() {
+    console.warn("NotImplemented@%cAdsFromPlayer", "color:lawngreen;");
+
+    window.location.reload();
+
+    removeLoading();
+}
+
+// * Redirects
+
+function removeRedirectsFromOthers() {
+    // console.warn("NotImplemented@%cRedirectsFromOthers", "color: salmon;");
+
+    replaceWholeHtmlToRemoveEvents();
+    addBackFunctionalityToScrollToTop();
+
+    removeLoading();
+}
+
+function removeRedirectsFromPlayer() {
+    // console.warn("NotImplemented@%cRedirectsFromPlayer", "color: salmon;");
+
+    replaceWholeHtmlToRemoveEvents();
+    addBackFunctionalityToScrollToTop();
+
+    removeLoading();
+}
+
+function addRedirectsFromOthers() {
+    console.warn("NotImplemented@%cRedirectsFromOthers", "color:lawngreen;");
+
+    // window.location.reload();
+
+    removeLoading();
+}
+
+function addRedirectsFromPlayer() {
+    console.warn("NotImplemented@%cRedirectsFromPlayer", "color:lawngreen;");
+
+    // window.location.reload();
+
+    removeLoading();
+}
+
+// !SPLIT
+
+document.addEventListener('readystatechange', () => {
+    if (document.readyState === "complete")
+        addLoadingScreenTillAdsAreRemoved();
+});
 
 function removeAllScripts() {
     document.querySelectorAll("script").forEach(
@@ -36,27 +159,22 @@ function addLoadingScreenTillAdsAreRemoved() {
 }
 
 function removeLoading() {
-    const wrapperDiv = document.querySelector(".spinner-wrapper");
+    const wrapperDiv = document.querySelectorAll(".spinner-wrapper");
     const main = document.querySelector(".main");
 
     main.classList.remove("custom-overlay");
-    wrapperDiv.remove();
+    if (wrapperDiv.length > 0) {
+        wrapperDiv.forEach(el => {
+            el.remove()
+        })
+    }
 }
 
 function prepareLoadingDiv() {
     const rollerDiv = document.createElement("div");
     rollerDiv.classList.add("lds-roller");
     // * Populate wrapper div with simple divs to create the effect of loading
-    rollerDiv.innerHTML = `
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    `;
+    rollerDiv.innerHTML = `<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>`;
 
     return rollerDiv;
 }
@@ -70,7 +188,10 @@ function addBackFunctionalityToScrollToTop() {
 }
 
 function removeYouTubeVideoFromPlayer() {
-    document.querySelector("#vidad").remove();
+    const ytVideo = document.querySelector("#vidad");
+    if (ytVideo) {
+        ytVideo.remove();
+    }
 }
 
 function closeNotification() {
@@ -81,17 +202,18 @@ function closeNotification() {
     }
 }
 
-function onClearance() {
-    document.addEventListener('readystatechange', () => {
-        if (document.readyState === "complete") {
-            removeAllScripts();
-            replaceWholeHtmlToRemoveEvents();
-            removeLoading();
-            addBackFunctionalityToScrollToTop();
+function onOthersAdsClearance() {
+    removeAllIFrames();
+    removeAllScripts();
+    addBackFunctionalityToScrollToTop();
+    removeAllAdsAppearance();
+}
 
-            removeAllAdsAppearance();
-        }
-    })
+function onPlayerAdsClearance() {
+    removeYouTubeVideoFromPlayer();
+    removeWidgetAd();
+    removeBitLyAds();
+    // getIframeFromMoviePlayer();
 }
 
 function removeAllAdsAppearance() {
@@ -126,26 +248,6 @@ function removeRealAds() {
     }
 }
 
-/**
- * Return all links that we can perform basic ad removal
- * @returns {string[]}
- */
-function getAllRedirectsFromHeader() {
-    const header = document.querySelector('.head-menu');
-    const links = header.querySelectorAll('a');
-    return Array.from(links)
-        .filter(
-            el =>
-                !(
-                    el.href.includes('bit.ly') ||
-                    el.href.includes('javascript') ||
-                    el.href.length === 23
-                )
-        ).map(el => {
-            return el.href;
-        })
-}
-
 function removeWidgetAd() {
     const widget = document.querySelector('.widgets');
 
@@ -160,29 +262,3 @@ function getIframeFromMoviePlayer() {
     const frame = moviePlayer.querySelector("iframe");
     window.open(frame.src, "_blank").focus();
 }
-
-// * Main Function
-(function () {
-    if (location.host.includes("filma24")) {
-
-        const links = getAllRedirectsFromHeader();
-        links.push("https://www.filma24.ai/");
-
-        // * Check if we are on a movie page or at any other page
-        // * If true we are at any page except movie page
-        if (links.includes(window.location.href) ||
-            window.location.href.includes("page/")) {
-
-            addLoadingScreenTillAdsAreRemoved();
-
-            removeAllIFrames();
-
-            onClearance();
-        } else {
-            removeYouTubeVideoFromPlayer();
-            removeWidgetAd();
-            removeBitLyAds();
-            getIframeFromMoviePlayer();
-        }
-    }
-})()
