@@ -25,16 +25,41 @@ export class AppComponent implements OnInit {
     }
 
     onChromeUpdateSync(state: boolean, field: "ads" | "redirects") {
-        if (!(this.blockAds && this.blockRedirects)) {
-            // TODO: Disable Icon if both of options are off
-        }
 
-        this[`block${this.capitalizeFirstLetter(field)}`] = state;
+        const formattedField = this.capitalizeFirstLetter(field);
 
+        this[`block${formattedField}`] = state;
+
+        this.notifyContentScript(state, formattedField);
+
+        this.syncStorage(state, field);
+    }
+
+    private syncStorage(state: boolean, field: string) {
         // @ts-ignore
         chrome.storage.sync.set({
             [field]: state
         }, () => {
+        });
+    }
+
+    private notifyContentScript(state: boolean, field: string) {
+        // @ts-ignore
+        chrome.tabs.query({}, function (tabs) {
+            tabs.forEach(tab => {
+                if (tab.url.includes("filma24")) {
+                    const tabId = tab.id;
+
+                    // * action is Add if true and Remove otherwise
+                    // * type is Ads or Redirects
+                    // @ts-ignore
+                    chrome.tabs.sendMessage(tabId, {
+                        state,
+                        field
+                    }, () => {
+                    })
+                }
+            })
         });
     }
 
