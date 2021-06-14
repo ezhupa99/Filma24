@@ -25,6 +25,19 @@
   "host_permissions": [
     "https://www.filma24.ai/"
   ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.filma24.ai/*"
+      ],
+      "js": [
+        "assets/extension/contentScript.js"
+      ],
+      "css": [
+        "assets/extension/contentStyle.css"
+      ]
+    }
+  ],
   "permissions": [
     "activeTab",
     "storage",
