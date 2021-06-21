@@ -1,29 +1,22 @@
-# Angular Chrome Extension Scaffold
+# Filma24
 
-[![npm-release](https://img.shields.io/npm/v/@larscom/ng-chrome-extension.svg?label=npm)](https://www.npmjs.com/package/@larscom/ng-chrome-extension)
-[![@larscom/ng-chrome-extension](https://github.com/larscom/ng-chrome-extension/workflows/@larscom/ng-chrome-extension/badge.svg?branch=master)](https://github.com/larscom/ng-chrome-extension)
-[![license](https://img.shields.io/npm/l/@larscom/ng-chrome-extension)](https://github.com/larscom/ng-chrome-extension/blob/master/LICENSE)
-![npm](https://img.shields.io/npm/dw/@larscom/ng-chrome-extension)
+Filma24 is a Google Chrome extension for removing disturbing Ads and Redirects from [Filma24](https://www.filma24.ai/)
 
-Easily create Google Chrome Extensions (v3) using the `latest` version of Angular.
+## Installation
 
-The following scenarios/options are supported:
+Use the [Chrome Web Store](https://chrome.google.com/webstore/detail/filma24/jmkgalgjcajmnaffhhccaialhephchei) to install the extension on your
+Google Chrome browser.
 
-- Popup &#10003;
-- New Tab &#10003;
-- Options &#10003;
-- Service Worker &#10003;
-- Content Page &#10003;
+## How to install as a developer
 
-## Debugging
-Run: `npm start`
+1. _Clone_ the repo on your local machine.
+2. _Run_ `npm run watch` on your terminal from the root of the project.
+3. _Go To_ Extension Manager `chrome://extensions`.
+4. _Toggle_ **Developer Mode** switch on the top right.
+5. _Click_ **Load Unpacked** and _Select_ the `dist/` folder.
 
-Go to: Developer tools (inspect popup) => Sources => webpack
+## Contributing
 
-You can find your source files (TypeScript) over there.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-## Usage
-
-This project is only a scaffold, use the CLI tool to generate a new project.
-
-See: https://github.com/larscom/ng-chrome-extension
+Please make sure to test before making a Pull Request.
