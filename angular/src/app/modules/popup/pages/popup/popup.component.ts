@@ -1,27 +1,63 @@
-import { Component, Inject } from '@angular/core';
-import { bindCallback } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { TAB_ID } from '../../../../providers/tab-id.provider';
+import {Component, NgZone, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-popup',
-  templateUrl: 'popup.component.html',
-  styleUrls: ['popup.component.scss']
+    selector: 'app-popup',
+    templateUrl: 'popup.component.html',
+    styleUrls: ['popup.component.scss']
 })
-export class PopupComponent {
-  message: string;
+export class PopupComponent implements OnInit {
+    blockAds: boolean = null;
+    blockRedirects: boolean = null;
 
-  constructor(@Inject(TAB_ID) readonly tabId: number) {}
+    constructor(private zone: NgZone) {
+    }
 
-  async onClick(): Promise<void> {
-    this.message = await bindCallback<string>(chrome.tabs.sendMessage.bind(this, this.tabId, 'request'))()
-      .pipe(
-        map(msg =>
-          chrome.runtime.lastError
-            ? 'The current page is protected by the browser, goto: https://www.google.nl and try again.'
-            : msg
-        )
-      )
-      .toPromise();
-  }
+    ngOnInit() {
+        chrome.storage.sync.get(['ads', 'redirects'],
+            (result) => {
+                // * Wrap on zone since chrome API is not on AngularZONE
+                this.zone.run(() => {
+                    this.blockAds = result.ads;
+                    this.blockRedirects = result.redirects;
+                })
+            });
+    }
+
+    onChromeUpdateSync(state: boolean, field: "ads" | "redirects") {
+
+        const formattedField = this.capitalizeFirstLetter(field);
+
+        this[`block${formattedField}`] = state;
+
+        this.notifyContentScript(state, formattedField);
+
+        PopupComponent.syncStorage(state, field);
+    }
+
+    private static syncStorage(state: boolean, field: string) {
+        chrome.storage.sync.set({
+            [field]: state
+        }, () => {
+        });
+    }
+
+    private notifyContentScript(state: boolean, field: string) {
+        chrome.tabs.query({}, function (tabs) {
+            tabs.forEach(tab => {
+                if (tab.url.includes("filma24")) {
+                    const tabId = tab.id;
+
+                    // * action is Add if true and Remove otherwise
+                    // * type is Ads or Redirects
+                    chrome.tabs.sendMessage(tabId, {
+                        state,
+                        field
+                    }, () => {
+                    })
+                }
+            })
+        });
+    }
+
+    private capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 }
