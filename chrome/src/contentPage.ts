@@ -13,26 +13,45 @@ function getAllRedirectsFromHeader() {
         })
 }
 
-chrome.runtime.onMessage.addListener(
-    function (request) {
+const functionObject = {
+    removeAdsFromOthers,
+    removeAdsFromPlayer,
+    addAdsFromOthers,
+    addAdsFromPlayer,
+    removeRedirectsFromOthers,
+    removeRedirectsFromPlayer,
+    addRedirectsFromOthers,
+    addRedirectsFromPlayer
+}
 
-        addLoadingScreenTillAdsAreRemoved();
+addLoadingScreenTillAdsAreRemoved();
+
+chrome.runtime.onMessage.addListener(
+    function (request: {
+        field: 'Ads' | 'Redirects',
+        state: boolean
+    }) {
 
         const links = getAllRedirectsFromHeader();
 
         if (links.includes(window.location.href) ||
             window.location.href.includes("page/")) {
+
+            console.log("Field: ", request.field, "; State: ", request.state);
+            // console.log("This:", this);
             // * Remove/Add Ads on other pages
             request.state ?
-                this[`remove${request.field}FromOthers`]() :
-                this[`add${request.field}FromOthers`]();
+                functionObject[`remove${request.field}FromOthers`]() :
+                functionObject[`add${request.field}FromOthers`]();
         } else {
             request.state ?
-                this[`remove${request.field}FromPlayer`]() :
-                this[`add${request.field}FromPlayer`]();
+                functionObject[`remove${request.field}FromPlayer`]() :
+                functionObject[`add${request.field}FromPlayer`]();
         }
     }
 );
+
+console.log("Wrf: ", functionObject);
 
 function removeAdsFromOthers() {
     // console.warn("NotImplemented@%cAdsFromOthers", "color: salmon;");
@@ -148,8 +167,17 @@ function addLoadingScreenTillAdsAreRemoved() {
     const wrapperDiv = document.createElement("div");
     const body = document.querySelector("body");
     const main = document.querySelector(".main");
+    const movie = document.querySelector(".watch-movie");
 
     main.classList.add("custom-overlay");
+
+    main.addEventListener("click", listener)
+
+    // * Check if movie element exist because this function will be running on both others and movie urls
+    if (movie) {
+        movie.classList.add("custom-overlay");
+        movie.addEventListener("click", listener)
+    }
 
     wrapperDiv.classList.add("spinner-wrapper")
 
@@ -161,13 +189,27 @@ function addLoadingScreenTillAdsAreRemoved() {
 function removeLoading() {
     const wrapperDiv = document.querySelectorAll(".spinner-wrapper");
     const main = document.querySelector(".main");
+    const movie = document.querySelector(".watch-movie");
 
     main.classList.remove("custom-overlay");
+    main.removeEventListener("click", listener);
+
+    // * Check if movie element exist because this function will be running on both others and movie urls
+    if (movie) {
+        movie.classList.remove("custom-overlay");
+        movie.removeEventListener("click", listener);
+    }
+
+
     if (wrapperDiv.length > 0) {
         wrapperDiv.forEach(el => {
             el.remove()
         })
     }
+}
+
+function listener(event) {
+    event.stopPropagation();
 }
 
 function prepareLoadingDiv() {
