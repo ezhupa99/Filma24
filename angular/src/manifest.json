@@ -1,26 +1,42 @@
 {
-  "manifest_version": 3,
-  "name": "Angular Chrome Extension",
-  "short_name": "Angular Chrome Extension",
-  "version": "1.0.0",
-  "description": "Angular Chrome Extension scaffold project",
-  "permissions": ["tabs"],
-  "action": {
-    "default_popup": "index.html?#/popup",
-    "default_title": "Angular Chrome Extension"
-  },
-  "options_page": "index.html?#/options",
-  "chrome_url_overrides": {
-    "newtab": "index.html?#/tab"
-  },
-  "content_scripts": [
-    {
-      "js": ["contentPage.js"],
-      "matches": ["<all_urls>"]
+    "manifest_version": 3,
+    "name": "Filma24",
+    "version": "2.0.0",
+    "description": "No more disturbing ads while watching your favorite movie",
+    "icons": {
+        "16": "assets/images/icon16.png",
+        "32": "assets/images/icon32.png",
+        "48": "assets/images/icon48.png",
+        "128": "assets/images/icon128.png"
+    },
+    "permissions": [
+        "storage",
+        "tabs"
+    ],
+    "action": {
+        "default_popup": "index.html?#/popup",
+        "default_title": "Ad Blocker for Filma24"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "contentPage.js"
+            ],
+            "css": [
+                "assets/extension/contentStyle.css"
+            ],
+            "matches": [
+                "https://www.filma24.ai/*"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "serviceWorker.js"
+    },
+    "host_permissions": [
+        "https://www.filma24.ai/*"
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
     }
-  ],
-  "background": {
-    "service_worker": "serviceWorker.js"
-  },
-  "content_security_policy": { "extension_pages" : "script-src 'self'; object-src 'self'" }
 }
