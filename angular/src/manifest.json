@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Filma24",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "No more disturbing ads while watching your favorite movie",
     "icons": {
         "16": "assets/images/icon16.png",
