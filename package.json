@@ -1,8 +1,8 @@
 {
   "name": "angular-chrome-extension",
-  "version": "1.0.0",
-  "author": "Lars Kniep",
-  "description": "Angular Chrome Extension Template",
+  "version": "2.1.0",
+  "author": "Emanuel Zhupa",
+  "description": "No more disturbing ads while watching your favorite movie",
   "scripts": {
     "ng": "ng",
     "start": "npm run watch",
