@@ -51,8 +51,6 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-console.log("Wrf: ", functionObject);
-
 function removeAdsFromOthers() {
     // console.warn("NotImplemented@%cAdsFromOthers", "color: salmon;");
 
@@ -106,6 +104,7 @@ function removeRedirectsFromOthers() {
 
     replaceWholeHtmlToRemoveEvents();
     addBackFunctionalityToScrollToTop();
+    addBackFunctionalityToSearch();
 
     removeLoading();
 }
@@ -115,6 +114,7 @@ function removeRedirectsFromPlayer() {
 
     replaceWholeHtmlToRemoveEvents();
     addBackFunctionalityToScrollToTop();
+    addBackFunctionalityToSearch();
 
     removeLoading();
 }
@@ -229,6 +229,26 @@ function addBackFunctionalityToScrollToTop() {
     })
 }
 
+function addBackFunctionalityToSearch() {
+    const button = document.querySelector(".search2 button.sbtn") as HTMLButtonElement,
+        input = document.querySelector(".search2 input.sinput") as HTMLInputElement;
+
+    button.addEventListener("click", function (e) {
+        const target = e.target as HTMLButtonElement;
+
+        // * Input is active
+        if (target.classList.contains("close")) {
+            input.placeholder = "";
+            input.classList.remove("inclicked");
+            target.classList.remove("close");
+        } else {
+            input.placeholder = "Kërko ...";
+            input.classList.add("inclicked");
+            target.classList.add("close");
+        }
+    })
+}
+
 function removeYouTubeVideoFromPlayer() {
     const ytVideo = document.querySelector("#vidad");
     if (ytVideo) {
@@ -248,6 +268,7 @@ function onOthersAdsClearance() {
     removeAllIFrames();
     removeAllScripts();
     addBackFunctionalityToScrollToTop();
+    addBackFunctionalityToSearch();
     removeAllAdsAppearance();
 }
 
