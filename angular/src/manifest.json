@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Filma24",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "description": "No more disturbing ads while watching your favorite movie",
     "icons": {
         "16": "assets/images/icon16.png",
@@ -34,9 +34,14 @@
         "service_worker": "serviceWorker.js"
     },
     "host_permissions": [
-        "https://www.filma24.ai/*"
+        "https://www.filma24.ch/*",
+        "https://www.filma24.sh/*",
+        "https://www.filma24.so/*",
+        "https://www.filma24.bz/*",
+        "https://www.filma24.tv/*"
     ],
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"
-    }
+    },
+    "author": "Emanuel Zhupa"
 }
