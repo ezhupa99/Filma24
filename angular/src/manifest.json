@@ -26,7 +26,11 @@
                 "assets/extension/contentStyle.css"
             ],
             "matches": [
-                "https://www.filma24.ai/*"
+                "https://www.filma24.ch/*",
+                "https://www.filma24.sh/*",
+                "https://www.filma24.so/*",
+                "https://www.filma24.bz/*",
+                "https://www.filma24.tv/*"
             ]
         }
     ],
