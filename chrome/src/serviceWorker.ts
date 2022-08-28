@@ -37,7 +37,5 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
                     field: "Redirects"
                 })
             })
-
-
     }
 })
