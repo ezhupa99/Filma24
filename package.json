@@ -1,6 +1,6 @@
 {
     "name": "angular-chrome-extension",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "author": "Emanuel Zhupa",
     "description": "No more disturbing ads while watching your favorite movie",
     "scripts": {
