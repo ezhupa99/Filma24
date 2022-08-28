@@ -26,6 +26,7 @@
                         "tsConfig": "angular/src/tsconfig.app.json",
                         "assets": [
                             "angular/src/manifest.json",
+                            "angular/src/trackad.json",
                             "angular/src/assets"
                         ],
                         "styles": [
@@ -35,31 +36,38 @@
                     },
                     "configurations": {
                         "production": {
+                            "optimization": {
+                                "styles": {
+                                    "inlineCritical": false
+                                }
+                            },
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "500kb",
+                                    "maximumError": "1mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ],
                             "fileReplacements": [
                                 {
                                     "replace": "angular/src/environments/environment.ts",
                                     "with": "angular/src/environments/environment.prod.ts"
                                 }
                             ],
-                            "optimization": true,
-                            "outputHashing": "all",
-                            "sourceMap": false,
-                            "namedChunks": false,
-                            "aot": true,
+                            "outputHashing": "all"
+                        },
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
                             "extractLicenses": false,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "2mb",
-                                    "maximumError": "5mb"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb"
-                                }
-                            ]
+                            "sourceMap": true,
+                            "namedChunks": true
                         }
                     }
                 },
