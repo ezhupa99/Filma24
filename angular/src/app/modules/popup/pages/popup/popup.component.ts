@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-popup',
@@ -17,8 +17,8 @@ export class PopupComponent implements OnInit {
             (result) => {
                 // * Wrap on zone since chrome API is not on AngularZONE
                 this.zone.run(() => {
-                    this.blockAds = result.ads;
-                    this.blockRedirects = result.redirects;
+                    this.blockAds = result['ads'];
+                    this.blockRedirects = result['redirects'];
                 })
             });
     }
