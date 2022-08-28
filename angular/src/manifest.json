@@ -2,6 +2,7 @@
     "manifest_version": 3,
     "name": "Filma24",
     "version": "3.0.0",
+    "author": "Emanuel Zhupa",
     "description": "No more disturbing ads while watching your favorite movie",
     "icons": {
         "16": "assets/images/icon16.png",
@@ -11,8 +12,18 @@
     },
     "permissions": [
         "storage",
-        "tabs"
+        "tabs",
+        "declarativeNetRequest"
     ],
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "trackad",
+                "enabled": true,
+                "path": "trackad.json"
+            }
+        ]
+    },
     "action": {
         "default_popup": "index.html?#/popup",
         "default_title": "Ad Blocker for Filma24"
@@ -46,6 +57,5 @@
     ],
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"
-    },
-    "author": "Emanuel Zhupa"
+    }
 }
