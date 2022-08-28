@@ -37,8 +37,6 @@ chrome.runtime.onMessage.addListener(
         if (links.includes(window.location.href) ||
             window.location.href.includes("page/")) {
 
-            console.log("Field: ", request.field, "; State: ", request.state);
-            // console.log("This:", this);
             // * Remove/Add Ads on other pages
             request.state ?
                 functionObject[`remove${request.field}FromOthers`]() :
@@ -52,16 +50,12 @@ chrome.runtime.onMessage.addListener(
 );
 
 function removeAdsFromOthers() {
-    // console.warn("NotImplemented@%cAdsFromOthers", "color: salmon;");
-
     onOthersAdsClearance();
 
     removeLoading();
 }
 
 function removeAdsFromPlayer() {
-    // console.warn("NotImplemented@%cAdsFromPlayer", "color: salmon;");
-
     onPlayerAdsClearance();
 
     removeLoading();
@@ -137,9 +131,8 @@ function addRedirectsFromPlayer() {
 
 // !SPLIT
 
-document.addEventListener('readystatechange', () => {
-    if (document.readyState === "complete")
-        addLoadingScreenTillAdsAreRemoved();
+document.addEventListener('DOMContentLoaded', () => {
+    addLoadingScreenTillAdsAreRemoved();
 });
 
 function removeAllScripts() {
@@ -225,7 +218,7 @@ function addBackFunctionalityToScrollToTop() {
     const scroller = document.querySelector("#scroller");
 
     scroller.addEventListener("click", function () {
-        window.scroll({top: 0})
+        window.scroll({ top: 0, behavior: "smooth" });
     })
 }
 
@@ -270,13 +263,15 @@ function onOthersAdsClearance() {
     addBackFunctionalityToScrollToTop();
     addBackFunctionalityToSearch();
     removeAllAdsAppearance();
+
+    Array.from(document.querySelectorAll('.latest-movies')).forEach(el => { el.remove() });
 }
 
 function onPlayerAdsClearance() {
-    removeYouTubeVideoFromPlayer();
-    removeWidgetAd();
-    removeBitLyAds();
-    // getIframeFromMoviePlayer();
+    // removeYouTubeVideoFromPlayer();
+    // removeWidgetAd();
+    // removeBitLyAds();
+    getVideoSourceAndPlay();
 }
 
 function removeAllAdsAppearance() {
@@ -289,39 +284,63 @@ function removeAllAdsAppearance() {
  * Remove all ads associated with bit.ly
  */
 function removeBitLyAds() {
-    const centers = document.querySelectorAll("center");
-
-    if (centers && centers.length !== 0) {
-        centers.forEach(cnt => {
-            cnt.remove();
-        })
-    }
+    Array.from(document.querySelectorAll("center")).forEach(el => { el.remove(); });
 }
 
 /**
  * Remove all ads from Adskeeper
  */
 function removeRealAds() {
-    const allAds = document.querySelectorAll('[id^="Ads"]');
+    Array
+        .from(document
+            .querySelectorAll('[id^=Ads]'))
+        .forEach(ad => ad.remove());
 
-    if (allAds && allAds.length !== 0) {
-        allAds.forEach(ad => {
-            ad.remove();
-        })
-    }
+    Array
+        .from(document
+            .querySelectorAll('[id*=Track]'))
+        .forEach(ad => ad.remove());
+
+
+    Array
+        .from(document
+            .querySelectorAll('[id*=ads]'))
+        .forEach(ad => ad.remove());
+
+    Array
+        .from(document
+            .querySelectorAll('[id*=track]'))
+        .forEach(ad => ad.remove());
+
+
+    Array
+        .from(document
+            .querySelectorAll('[id*=boost]'))
+        .forEach(ad => ad.remove());
+
+    // setInterval(() => {
+    //     const scroller = document.querySelector('#scroller');
+    //     if (scroller) {
+    //         const overlay = scroller.nextSibling;
+
+    //         if (overlay) {
+    //             overlay.remove();
+    //         }
+
+    //     }
+    // }, 1);
+
 }
 
 function removeWidgetAd() {
-    const widget = document.querySelector('.widgets');
-
-    if (widget) widget.remove();
+    Array.from(document.querySelectorAll('.widgets')).forEach(el => { el.remove(); });
+    Array.from(document.querySelectorAll('.widget')).forEach(el => { el.remove(); });
 }
 
 /**
  * Get the frame
  */
-function getIframeFromMoviePlayer() {
-    const moviePlayer = document.querySelector(".movie-player");
-    const frame = moviePlayer.querySelector("iframe");
-    window.open(frame.src, "_blank").focus();
+function getVideoSourceAndPlay() {
+    const movieSource = document.querySelector('video').firstChild['src'];
+    window.open(movieSource, "_blank").focus();
 }
