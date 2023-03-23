@@ -50,12 +50,12 @@ export class PopupComponent implements OnInit {
 					const tabId = tab.id;
 
 					// * action is Add if true and Remove otherwise
-					// * type is Redirects
+					// * type is redirects
 					chrome.tabs.sendMessage(
 						tabId,
 						{
 							state,
-							field: 'Redirects',
+							field: 'redirects',
 						},
 						() => {}
 					);

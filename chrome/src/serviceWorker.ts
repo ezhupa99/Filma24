@@ -18,15 +18,10 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
 	if (changeInfo.status === 'complete') {
-		chrome.storage.sync.get(['ads', 'redirects'], function (res) {
-			chrome.tabs.sendMessage(tabId, {
-				state: res.ads,
-				field: 'Ads',
-			});
-
+		chrome.storage.sync.get(['redirects'], function (res) {
 			chrome.tabs.sendMessage(tabId, {
 				state: res.redirects,
-				field: 'Redirects',
+				field: 'redirects',
 			});
 		});
 	}
