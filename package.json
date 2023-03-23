@@ -1,8 +1,8 @@
 {
     "name": "angular-chrome-extension",
-    "version": "3.0.0",
+    "version": "3.1.0",
     "author": "Emanuel Zhupa",
-    "description": "No more disturbing ads while watching your favorite movie",
+    "description": "No more disturbing redirects while watching your favorite movie",
     "scripts": {
         "ng": "ng",
         "start": "npm run watch",
