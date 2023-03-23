@@ -1,63 +1,66 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	NgZone,
+	OnInit,
+} from '@angular/core';
 
 @Component({
-    selector: 'app-popup',
-    templateUrl: 'popup.component.html',
-    styleUrls: ['popup.component.sass']
+	selector: 'app-popup',
+	templateUrl: 'popup.component.html',
+	styleUrls: ['popup.component.sass'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PopupComponent implements OnInit {
-    blockAds: boolean = null;
-    blockRedirects: boolean = null;
+	blockRedirects: boolean = null;
 
-    constructor(private zone: NgZone) {
-    }
+	constructor(private zone: NgZone) {}
 
-    ngOnInit() {
-        chrome.storage.sync.get(['ads', 'redirects'],
-            (result) => {
-                // * Wrap on zone since chrome API is not on AngularZONE
-                this.zone.run(() => {
-                    this.blockAds = result['ads'];
-                    this.blockRedirects = result['redirects'];
-                })
-            });
-    }
+	ngOnInit() {
+		chrome.storage.sync.get(['redirects'], result => {
+			console.log('result', result);
+			// * Wrap on zone since chrome API is not on AngularZONE
+			this.zone.run(() => {
+				this.blockRedirects = result['redirects'];
+			});
+		});
+	}
 
-    onChromeUpdateSync(state: boolean, field: "ads" | "redirects") {
+	onChromeUpdateSync(state: boolean) {
+		this.blockRedirects = state;
 
-        const formattedField = this.capitalizeFirstLetter(field);
+		this.notifyContentScript(state);
 
-        this[`block${formattedField}`] = state;
+		this.syncStorage(state);
+	}
 
-        this.notifyContentScript(state, formattedField);
+	private syncStorage(state: boolean) {
+		chrome.storage.sync.set(
+			{
+				'redirects': state,
+			},
+			() => {}
+		);
+	}
 
-        PopupComponent.syncStorage(state, field);
-    }
+	private notifyContentScript(state: boolean) {
+		chrome.tabs.query(null, function (tabs) {
+			tabs.forEach(tab => {
+				if (tab.url.includes('filma24')) {
+					const tabId = tab.id;
 
-    private static syncStorage(state: boolean, field: string) {
-        chrome.storage.sync.set({
-            [field]: state
-        }, () => {
-        });
-    }
-
-    private notifyContentScript(state: boolean, field: string) {
-        chrome.tabs.query({}, function (tabs) {
-            tabs.forEach(tab => {
-                if (tab.url.includes("filma24")) {
-                    const tabId = tab.id;
-
-                    // * action is Add if true and Remove otherwise
-                    // * type is Ads or Redirects
-                    chrome.tabs.sendMessage(tabId, {
-                        state,
-                        field
-                    }, () => {
-                    })
-                }
-            })
-        });
-    }
-
-    private capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+					// * action is Add if true and Remove otherwise
+					// * type is Redirects
+					chrome.tabs.sendMessage(
+						tabId,
+						{
+							state,
+							field: 'Redirects',
+						},
+						() => {}
+					);
+				}
+			});
+		});
+	}
 }

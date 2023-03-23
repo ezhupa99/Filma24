@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { PopupComponent } from './pages/popup/popup.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: PopupComponent
-  }
+	{
+		path: '',
+		component: PopupComponent,
+	},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule],
 })
 export class PopupRoutingModule {}

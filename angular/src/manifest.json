@@ -1,61 +1,53 @@
 {
-    "manifest_version": 3,
-    "name": "Filma24",
-    "version": "3.0.0",
-    "author": "Emanuel Zhupa",
-    "description": "No more disturbing ads while watching your favorite movie",
-    "icons": {
-        "16": "assets/images/icon16.png",
-        "32": "assets/images/icon32.png",
-        "48": "assets/images/icon48.png",
-        "128": "assets/images/icon128.png"
-    },
-    "permissions": [
-        "storage",
-        "tabs",
-        "declarativeNetRequest"
-    ],
-    "declarative_net_request": {
-        "rule_resources": [
-            {
-                "id": "trackad",
-                "enabled": true,
-                "path": "trackad.json"
-            }
-        ]
-    },
-    "action": {
-        "default_popup": "index.html?#/popup",
-        "default_title": "Ad Blocker for Filma24"
-    },
-    "content_scripts": [
-        {
-            "js": [
-                "contentPage.js"
-            ],
-            "css": [
-                "assets/extension/contentStyle.css"
-            ],
-            "matches": [
-                "https://www.filma24.ch/*",
-                "https://www.filma24.sh/*",
-                "https://www.filma24.so/*",
-                "https://www.filma24.bz/*",
-                "https://www.filma24.tv/*"
-            ]
-        }
-    ],
-    "background": {
-        "service_worker": "serviceWorker.js"
-    },
-    "host_permissions": [
-        "https://www.filma24.ch/*",
-        "https://www.filma24.sh/*",
-        "https://www.filma24.so/*",
-        "https://www.filma24.bz/*",
-        "https://www.filma24.tv/*"
-    ],
-    "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'"
-    }
+	"manifest_version": 3,
+	"name": "Filma24",
+	"version": "3.0.0",
+	"author": "Emanuel Zhupa",
+	"description": "No more disturbing ads while watching your favorite movie",
+	"icons": {
+		"16": "assets/images/icon16.png",
+		"32": "assets/images/icon32.png",
+		"48": "assets/images/icon48.png",
+		"128": "assets/images/icon128.png"
+	},
+	"permissions": ["storage", "tabs", "declarativeNetRequest"],
+	"declarative_net_request": {
+		"rule_resources": [
+			{
+				"id": "trackad",
+				"enabled": true,
+				"path": "trackad.json"
+			}
+		]
+	},
+	"action": {
+		"default_popup": "index.html?#/popup",
+		"default_title": "Ad Blocker for Filma24"
+	},
+	"content_scripts": [
+		{
+			"js": ["contentPage.js"],
+			"css": ["assets/extension/contentStyle.css"],
+			"matches": [
+				"https://www.filma24.ch/*",
+				"https://www.filma24.sh/*",
+				"https://www.filma24.so/*",
+				"https://www.filma24.bz/*",
+				"https://www.filma24.tv/*"
+			]
+		}
+	],
+	"background": {
+		"service_worker": "serviceWorker.js"
+	},
+	"host_permissions": [
+		"https://www.filma24.ch/*",
+		"https://www.filma24.sh/*",
+		"https://www.filma24.so/*",
+		"https://www.filma24.bz/*",
+		"https://www.filma24.tv/*"
+	],
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'"
+	}
 }
