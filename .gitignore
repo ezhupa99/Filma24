@@ -21,3 +21,6 @@
 
 # secrets
 secrets.*.js
+
+# extension build
+extension-build.zip
